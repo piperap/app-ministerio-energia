@@ -131,13 +131,10 @@ with st.sidebar:
         st.cache_data.clear()
         st.rerun()
 
-    st.caption(f"Fuente: {config.DATASET_ORGANISMO}")
+    st.markdown("### Fuente")
+    st.caption(config.DATASET_ORGANISMO)
+    st.caption(f"[{config.DATASET_TITULO}]({config.DATASET_URL})")
     st.caption(f"{fmt(len(df))} registros · {ANIO_MIN}–{ANIO_MAX}")
-
-    st.divider()
-    st.markdown("### Integrantes")
-    for nombre in config.INTEGRANTES:
-        st.caption(nombre)
 
 
 # --- Aplicación de los filtros en una sola máscara vectorizada ------------- #
@@ -152,7 +149,7 @@ dff = df[mascara]
 # --------------------------------------------------------------------------- #
 st.markdown(f"""
 <div class="portada">
-  <h1>⚡ La transición energética de Chile en datos</h1>
+  <h1>⚡ {config.TITULO}</h1>
   <p>{config.DATASET_TITULO} · datos obtenidos por API REST desde datos.gob.cl</p>
 </div>
 """, unsafe_allow_html=True)
@@ -300,5 +297,7 @@ GET {config.API_BASE}/datastore_search
 
 
 st.divider()
-st.caption(f"{config.ASIGNATURA} · {config.ACTIVIDAD} · {config.UNIDAD_SEMANA} "
-           f"· {' · '.join(config.INTEGRANTES)}")
+st.caption(
+    f"Datos: [{config.DATASET_ORGANISMO}]({config.DATASET_URL}) · "
+    f"obtenidos por API REST desde datos.gob.cl · {config.DATASET_LICENCIA}"
+)

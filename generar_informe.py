@@ -1,18 +1,18 @@
 """
-Generador de la entrega en Word
+Generador de documentos en Word
 ===============================
-Ejecutar con:  python generar_entrega.py
+Ejecutar con:  python generar_informe.py
 
-Produce dos documentos EDITABLES, listos para revisar y luego exportar a PDF:
-  1. <NOMBRE_ARCHIVO_ENTREGA>.docx         -> informe completo del proyecto
-  2. <NOMBRE_ARCHIVO_ENTREGA>_Poster.docx  -> póster del proyecto (1 página)
+Produce dos documentos editables, listos para revisar y exportar a PDF:
+  1. <NOMBRE_ARCHIVO_INFORME>.docx         -> informe completo del análisis
+  2. <NOMBRE_ARCHIVO_INFORME>_Poster.docx  -> póster de una página horizontal
 
-Opcional:  python generar_entrega.py --pdf
-           además exporta ambos a PDF usando Microsoft Word o LibreOffice.
+Opcional:  python generar_informe.py --pdf
+           además exporta ambos a PDF usando LibreOffice, si está instalado.
 
 Reutiliza exactamente las mismas funciones de análisis y los mismos gráficos
-que la aplicación Streamlit (módulos api_datos.py y analisis.py): los números
-del informe nunca pueden contradecir los de la app.
+que la aplicación Streamlit (módulos api_datos.py y analisis.py): las cifras
+de los documentos nunca pueden contradecir las de la interfaz.
 """
 
 from __future__ import annotations
@@ -320,27 +320,24 @@ def construir_informe(ruta: Path, df, kpi, tabla, tec, ev, meta, rutas) -> None:
         / df["generacion_mwh"].sum() * 100
 
     doc = Document()
-    doc.core_properties.title = config.ACTIVIDAD
-    doc.core_properties.author = ", ".join(config.INTEGRANTES)
+    doc.core_properties.title = config.TITULO
+    doc.core_properties.author = ", ".join(config.INFORME_AUTORES)
 
     s = doc.sections[0]
     s.left_margin = s.right_margin = Cm(2.2)
     s.top_margin = Cm(2.0)
     s.bottom_margin = Cm(2.0)
-    encabezado_pagina(s, f"{config.ASIGNATURA} · {config.UNIDAD_SEMANA}")
-    pie_de_pagina(s, f"{config.ACTIVIDAD} · {' · '.join(config.INTEGRANTES)}")
+    encabezado_pagina(s, f"{config.INFORME_CONTEXTO} · {config.INFORME_REFERENCIA}")
+    pie_de_pagina(s, f"{config.TITULO} · {' · '.join(config.INFORME_AUTORES)}")
 
     ANCHO = 16.6
 
     # ------------------------------ Portada ------------------------------- #
     parrafo(doc, "", tamano=11, espacio_despues=14)
-    parrafo(doc, "La transición energética de Chile en datos", tamano=24,
+    parrafo(doc, config.TITULO, tamano=24,
             negrita=True, color=AZUL, alineacion=WD_ALIGN_PARAGRAPH.CENTER,
             espacio_despues=4)
-    parrafo(doc, "Análisis y presentación de datos utilizando APIs REST en Python",
-            tamano=12, color=GRIS, alineacion=WD_ALIGN_PARAGRAPH.CENTER,
-            espacio_despues=4)
-    parrafo(doc, config.ACTIVIDAD, tamano=11, negrita=True, color=NEGRO,
+    parrafo(doc, config.SUBTITULO, tamano=12, color=GRIS,
             alineacion=WD_ALIGN_PARAGRAPH.CENTER, espacio_despues=18)
 
     ficha = doc.add_table(rows=2, cols=2)
@@ -348,9 +345,9 @@ def construir_informe(ruta: Path, df, kpi, tabla, tec, ev, meta, rutas) -> None:
     margenes_celda(ficha, 5, 5, 7, 7)
     ancho(ficha, [ANCHO / 2, ANCHO / 2])
     datos_ficha = [
-        (f"**Asignatura**\n{config.ASIGNATURA}",
-         f"**Unidad y semana**\n{config.UNIDAD_SEMANA}"),
-        ("**Integrantes**\n" + "\n".join(config.INTEGRANTES),
+        (f"**Asignatura**\n{config.INFORME_CONTEXTO}",
+         f"**Unidad y semana**\n{config.INFORME_REFERENCIA}"),
+        ("**Integrantes**\n" + "\n".join(config.INFORME_AUTORES),
          f"**Fecha de entrega**\n{date.today():%d-%m-%Y}"),
     ]
     for i, fila in enumerate(datos_ficha):
@@ -457,7 +454,7 @@ def construir_informe(ruta: Path, df, kpi, tabla, tec, ev, meta, rutas) -> None:
          "pandas, matplotlib"],
         ["Presentación", "app.py",
          "Interfaz web interactiva con filtros", "streamlit"],
-        ["Entrega", "generar_entrega.py",
+        ["Entrega", "generar_informe.py",
          "Informe y póster en Word", "python-docx"],
     ], anchos=[2.9, 3.2, 6.9, 3.6], tamano=8.5)
 
@@ -620,7 +617,7 @@ def construir_informe(ruta: Path, df, kpi, tabla, tec, ev, meta, rutas) -> None:
     parrafo(doc, "La aplicación se abre en http://localhost:8501. El botón "
                  "«Actualizar desde la API» de la barra lateral fuerza una nueva "
                  "descarga en vivo desde datos.gob.cl. Para regenerar este "
-                 "informe y el póster: python generar_entrega.py.",
+                 "informe y el póster: python generar_informe.py.",
             alineacion=WD_ALIGN_PARAGRAPH.JUSTIFY)
 
     # ------------------------------ 8. Referencias ------------------------ #
@@ -648,8 +645,8 @@ def construir_poster(ruta: Path, df, kpi, tabla, ev, rutas) -> None:
     cae = (ev.iloc[-1] - ev.iloc[0]).idxmin()
 
     doc = Document()
-    doc.core_properties.title = f"Póster · {config.ACTIVIDAD}"
-    doc.core_properties.author = ", ".join(config.INTEGRANTES)
+    doc.core_properties.title = f"Póster · {config.TITULO}"
+    doc.core_properties.author = ", ".join(config.INFORME_AUTORES)
 
     s = doc.sections[0]
     s.orientation = WD_ORIENT.LANDSCAPE
@@ -689,12 +686,12 @@ def construir_poster(ruta: Path, df, kpi, tabla, ev, rutas) -> None:
     ancho(cab, [TOTAL])
     celda = vaciar(cab.cell(0, 0))
     sombrear(celda, "0F172A")
-    parrafo(celda, "La transición energética de Chile en datos", tamano=19,
+    parrafo(celda, config.TITULO, tamano=19,
             negrita=True, color=RGBColor(0xFF, 0xFF, 0xFF),
             alineacion=WD_ALIGN_PARAGRAPH.CENTER, espacio_despues=2,
             interlineado=1.0)
-    parrafo(celda, f"{config.ACTIVIDAD} · {config.UNIDAD_SEMANA} · "
-                   f"{' · '.join(config.INTEGRANTES)}", tamano=9,
+    parrafo(celda, f"{config.INFORME_CONTEXTO} · {config.INFORME_REFERENCIA} · "
+                   f"{' · '.join(config.INFORME_AUTORES)}", tamano=9,
             color=RGBColor(0xCB, 0xD5, 0xE1),
             alineacion=WD_ALIGN_PARAGRAPH.CENTER, espacio_despues=0,
             interlineado=1.0)
@@ -832,7 +829,7 @@ def construir_poster(ruta: Path, df, kpi, tabla, ev, rutas) -> None:
     # -------------------------------- Pie --------------------------------- #
     parrafo(doc, f"Fuente: {config.DATASET_ORGANISMO} · API REST datos.gob.cl · "
                  f"{fmt(len(df), 0)} registros · {config.DATASET_LICENCIA}  |  "
-                 f"{config.ASIGNATURA} · {config.UNIDAD_SEMANA}",
+                 f"{config.INFORME_CONTEXTO} · {config.INFORME_REFERENCIA}",
             tamano=7.2, color=GRIS, alineacion=WD_ALIGN_PARAGRAPH.CENTER,
             espacio_antes=3, espacio_despues=0, interlineado=1.0)
 
@@ -897,12 +894,12 @@ def main() -> None:
     rutas = exportar_graficos(df)
 
     print("3/4  Construyendo el informe en Word …")
-    informe = BASE / f"{config.NOMBRE_ARCHIVO_ENTREGA}.docx"
+    informe = BASE / f"{config.NOMBRE_ARCHIVO_INFORME}.docx"
     construir_informe(informe, df, kpi, tabla, tec, ev, meta, rutas)
     print(f"     ✓ {informe.name}")
 
     print("4/4  Construyendo el póster en Word …")
-    poster = BASE / f"{config.NOMBRE_ARCHIVO_ENTREGA}_Poster.docx"
+    poster = BASE / f"{config.NOMBRE_ARCHIVO_INFORME}_Poster.docx"
     construir_poster(poster, df, kpi, tabla, ev, rutas)
     print(f"     ✓ {poster.name}")
 
@@ -910,8 +907,8 @@ def main() -> None:
         print("\n5/5  Exportando a PDF …")
         exportar_pdf([informe, poster])
 
-    print("\nListo. Revisa y edita los documentos en Word y luego expórtalos a "
-          "PDF para subirlos a la plataforma.")
+    print("\nListo. Ábrelos en Word para revisarlos o editarlos; para obtener "
+          "PDF usa Archivo → Guardar como… → PDF.")
 
 
 if __name__ == "__main__":

@@ -79,22 +79,35 @@ centrales generadoras.
 
 ## Configuración
 
-Todo lo configurable está en **`config.py`**, en la parte de arriba:
+Todo lo configurable está en **`config.py`**.
+
+### Usar otro conjunto de datos
+
+Reemplaza `RESOURCE_ID` por el identificador de cualquier recurso de
+datos.gob.cl que esté publicado en el *datastore* de CKAN, y actualiza los
+textos descriptivos:
 
 ```python
-INTEGRANTES = [
-    "Nombre Apellido 1",
-    "Nombre Apellido 2",
-    "Nombre Apellido 3",
-]
+RESOURCE_ID = "389a1943-9c3d-4957-982a-58e3fb0c1bdb"
+
+DATASET_TITULO = "Generación Bruta Mensual del Sistema Eléctrico Nacional (SEN)"
+DATASET_ORGANISMO = "Comisión Nacional de Energía (CNE) - Ministerio de Energía"
+DATASET_URL = "https://datos.gob.cl/dataset/generacion-bruta"
 ```
 
-Esos nombres aparecen en la barra lateral y al pie de la aplicación.
+Si el nuevo recurso tiene otras columnas, habrá que ajustar la función
+`limpiar()` de `api_datos.py`, que es la que convierte la respuesta de la API
+en una tabla con tipos correctos.
 
-En el mismo archivo puedes cambiar el conjunto de datos: basta reemplazar
-`RESOURCE_ID` por el identificador de otro recurso de datos.gob.cl que esté
-publicado en el *datastore*. Si el nuevo recurso tiene otras columnas, habrá
-que ajustar `api_datos.limpiar()`.
+### Otros parámetros
+
+| Parámetro | Qué controla |
+|---|---|
+| `TITULO`, `SUBTITULO` | Encabezado de la aplicación y de los documentos |
+| `PAGE_SIZE` | Filas por petición a la API (máximo 10.000) |
+| `TIMEOUT` | Segundos de espera por petición |
+
+El tema visual (colores y tipografía) está en `.streamlit/config.toml`.
 
 ---
 
@@ -134,7 +147,7 @@ app.py                ← la aplicación web (Streamlit)
 api_datos.py          ← consulta la API, pagina y limpia los datos
 analisis.py           ← cálculos (pandas) y gráficos (matplotlib)
 config.py             ← configuración editable
-generar_entrega.py    ← genera un informe y un póster en Word
+generar_informe.py    ← genera un informe y un póster en Word
 requirements.txt      ← librerías necesarias
 ejecutar.command      ← doble clic para abrir la app (macOS)
 .streamlit/           ← tema visual de la aplicación
@@ -151,31 +164,21 @@ exactamente los mismos cálculos.
 
 ## Generar un informe y un póster
 
-Además de la aplicación, el proyecto puede producir dos documentos de Word
-editables con el análisis completo y los seis gráficos:
+Además de la aplicación, el proyecto incluye un generador de documentos que
+produce dos archivos de Word editables con el análisis completo y los seis
+gráficos en alta resolución:
 
 ```bash
-python generar_entrega.py
+python generar_informe.py
 ```
 
-Crea `<nombre>.docx` (informe) y `<nombre>_Poster.docx` (póster de una página
-horizontal), donde `<nombre>` es el valor de `NOMBRE_ARCHIVO_ENTREGA` en
-`config.py`. Para obtener PDF, ábrelos en Word y usa
+Crea un informe y un póster de una página horizontal. Los autores y los
+textos de portada se configuran en `config.py`, en la sección *Metadatos del
+informe*. Para obtener PDF, ábrelos en Word y usa
 **Archivo → Guardar como… → PDF**.
 
----
-
-## Publicarla en línea (opcional)
-
-Para tener una URL pública y gratuita, sin instalar nada:
-
-1. Entra a <https://share.streamlit.io> e inicia sesión con GitHub.
-2. **Create app → Deploy a public app from GitHub**.
-3. Completa:
-   - **Repository:** `piperap/app-ministerio-energia`
-   - **Branch:** `main`
-   - **Main file path:** `app.py`
-4. **Deploy**.
+Reutiliza las mismas funciones de `analisis.py` que la aplicación web, así
+que las cifras de los documentos y de la interfaz nunca pueden discrepar.
 
 ---
 
@@ -200,7 +203,7 @@ Para tener una URL pública y gratuita, sin instalar nada:
   pública y de solo lectura.
 - Los datos son **datos abiertos de generación eléctrica** y no contienen
   información personal.
-- Este repositorio es **público**: cualquier nombre que escribas en
+- Si el repositorio es público, recuerda que cualquier dato que escribas en
   `config.py` queda visible en Internet.
 
 ---
