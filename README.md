@@ -9,7 +9,7 @@ con filtros, indicadores y gráficos interactivos.
 
 ---
 
-## ▶️ Cómo ejecutarla en tu computador
+## Cómo ejecutarla en tu computador
 
 ### Lo que necesitas
 
@@ -18,7 +18,7 @@ con filtros, indicadores y gráficos interactivos.
   <https://www.python.org/downloads/>
 - Conexión a Internet la primera vez (después funciona sin conexión).
 
-### Tres comandos
+### Dos comandos
 
 Abre una terminal en la carpeta del proyecto y ejecuta:
 
@@ -31,7 +31,8 @@ La aplicación se abre sola en tu navegador, en `http://localhost:8501`.
 Para cerrarla, vuelve a la terminal y presiona `Ctrl + C`.
 
 > **En macOS puedes evitar la terminal:** haz doble clic en el archivo
-> `ejecutar.command`. Instala lo necesario y abre la aplicación por ti.
+> `ejecutar.command`. Instala lo necesario y abre la aplicación
+> automáticamente.
 
 ### ¿Se demora la primera vez?
 
@@ -41,7 +42,7 @@ instante.
 
 ---
 
-## 🖥️ Cómo usarla
+## Cómo usarla
 
 ### Filtros (barra lateral izquierda)
 
@@ -76,7 +77,7 @@ centrales generadoras.
 
 ---
 
-## ⚙️ Configuración
+## Configuración
 
 Todo lo configurable está en **`config.py`**, en la parte de arriba:
 
@@ -97,7 +98,7 @@ que ajustar `api_datos.limpiar()`.
 
 ---
 
-## 📡 De dónde vienen los datos
+## De dónde vienen los datos
 
 - **Recurso:** Generación Bruta Mensual del Sistema Eléctrico Nacional (SEN)
 - **Organismo:** Comisión Nacional de Energía (CNE) — Ministerio de Energía
@@ -126,7 +127,7 @@ python api_datos.py
 
 ---
 
-## 🗂️ Estructura del proyecto
+## Estructura del proyecto
 
 ```
 app.py                ← la aplicación web (Streamlit)
@@ -148,7 +149,7 @@ exactamente los mismos cálculos.
 
 ---
 
-## 📄 Generar un informe y un póster
+## Generar un informe y un póster
 
 Además de la aplicación, el proyecto puede producir dos documentos de Word
 editables con el análisis completo y los seis gráficos:
@@ -164,7 +165,7 @@ horizontal), donde `<nombre>` es el valor de `NOMBRE_ARCHIVO_ENTREGA` en
 
 ---
 
-## ☁️ Publicarla en línea (opcional)
+## Publicarla en línea (opcional)
 
 Para tener una URL pública y gratuita, sin instalar nada:
 
@@ -178,7 +179,7 @@ Para tener una URL pública y gratuita, sin instalar nada:
 
 ---
 
-## ❓ Problemas frecuentes
+## Problemas frecuentes
 
 | Situación | Solución |
 |---|---|
@@ -193,7 +194,7 @@ Para tener una URL pública y gratuita, sin instalar nada:
 
 ---
 
-## 🔒 Notas de seguridad
+## Notas de seguridad
 
 - La aplicación **no usa claves ni contraseñas**: la API de datos.gob.cl es
   pública y de solo lectura.
@@ -204,6 +205,6 @@ Para tener una URL pública y gratuita, sin instalar nada:
 
 ---
 
-## 🧰 Construido con
+## Construido con
 
 `streamlit` · `requests` · `pandas` · `matplotlib` · `python-docx`
