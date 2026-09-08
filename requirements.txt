@@ -1,0 +1,9 @@
+# Solemne II - Proyecto Final DataViz Python
+# Instalación:  pip install -r requirements.txt
+
+requests>=2.31        # consumo de la API REST (peticiones GET)
+pandas>=2.0           # análisis y transformación de datos
+matplotlib>=3.7       # generación de gráficos
+streamlit>=1.40       # aplicación web interactiva
+python-docx>=1.1      # generación del informe y póster en Word
+Pillow>=10.0          # manejo de imágenes al insertarlas en Word

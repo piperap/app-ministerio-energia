@@ -1,0 +1,14 @@
+# Tema fijo de la aplicación.
+# Se fija en claro para que los colores del diseño se vean igual en cualquier
+# equipo, sin depender de la preferencia del sistema operativo del evaluador.
+
+[theme]
+base = "light"
+primaryColor = "#0e7490"
+backgroundColor = "#ffffff"
+secondaryBackgroundColor = "#f8fafc"
+textColor = "#0f172a"
+font = "sans serif"
+
+[browser]
+gatherUsageStats = false
