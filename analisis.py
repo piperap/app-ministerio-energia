@@ -3,8 +3,8 @@ Capa de análisis: transformaciones con pandas y gráficos con matplotlib.
 
 Todas las funciones reciben un DataFrame ya filtrado y devuelven
 DataFrames agregados o figuras de matplotlib. No se hace ninguna llamada
-de red aquí: así el análisis es reutilizable tanto por la app Streamlit
-como por el generador del informe en PDF.
+de red aquí, de modo que el análisis se puede probar y reutilizar sin
+depender de la interfaz ni de la API.
 """
 
 from __future__ import annotations
@@ -35,7 +35,7 @@ def para_mostrar(df: pd.DataFrame) -> pd.DataFrame:
     """Devuelve el DataFrame con los encabezados en español."""
     return df.rename(columns=NOMBRES_COLUMNAS)
 
-# Paleta consistente en toda la aplicación y el informe
+# Paleta consistente en toda la aplicación
 COLORES = {
     "ERNC": "#16a34a",
     "Convencional": "#64748b",
@@ -50,8 +50,8 @@ PALETA = ["#0ea5e9", "#f59e0b", "#16a34a", "#dc2626", "#8b5cf6", "#0f766e",
 def fmt(valor, decimales: int = 0, signo: bool = False) -> str:
     """Formatea un número al estilo chileno: punto de miles y coma decimal.
 
-    Mezclar «89,313» con «43.6» en un mismo informe se lee como descuido, así
-    que todos los números del proyecto pasan por aquí.
+    Mezclar «89,313» con «43.6» en una misma pantalla se lee como descuido,
+    así que todos los números de la aplicación pasan por aquí.
     """
     texto = f"{valor:{'+' if signo else ''},.{decimales}f}"
     return texto.replace(",", "\x00").replace(".", ",").replace("\x00", ".")

@@ -8,12 +8,6 @@ env/
 # macOS
 .DS_Store
 
-# Artefactos generados por generar_entrega.py
-# (se regeneran con `python generar_entrega.py`, no se versionan)
-*.docx
-~$*
-assets/*.png
-
 # Secretos: nunca deben entrar al repositorio
 .env
 .env.*

@@ -103,7 +103,7 @@ en una tabla con tipos correctos.
 
 | Parámetro | Qué controla |
 |---|---|
-| `TITULO`, `SUBTITULO` | Encabezado de la aplicación y de los documentos |
+| `TITULO`, `SUBTITULO` | Textos del encabezado de la aplicación |
 | `PAGE_SIZE` | Filas por petición a la API (máximo 10.000) |
 | `TIMEOUT` | Segundos de espera por petición |
 
@@ -147,38 +147,16 @@ app.py                ← la aplicación web (Streamlit)
 api_datos.py          ← consulta la API, pagina y limpia los datos
 analisis.py           ← cálculos (pandas) y gráficos (matplotlib)
 config.py             ← configuración editable
-generar_informe.py    ← genera un informe y un póster en Word
 requirements.txt      ← librerías necesarias
 ejecutar.command      ← doble clic para abrir la app (macOS)
 .streamlit/           ← tema visual de la aplicación
 cache_datos.json.gz   ← copia local de los datos (se crea automáticamente)
 docs/                 ← capturas de pantalla
-assets/               ← gráficos exportados en PNG
 ```
 
-El código está separado en tres capas —obtención de datos, análisis y
-presentación— para que la aplicación y los documentos generados usen
-exactamente los mismos cálculos.
-
----
-
-## Generar un informe y un póster
-
-Además de la aplicación, el proyecto incluye un generador de documentos que
-produce dos archivos de Word editables con el análisis completo y los seis
-gráficos en alta resolución:
-
-```bash
-python generar_informe.py
-```
-
-Crea un informe y un póster de una página horizontal. Los autores y los
-textos de portada se configuran en `config.py`, en la sección *Metadatos del
-informe*. Para obtener PDF, ábrelos en Word y usa
-**Archivo → Guardar como… → PDF**.
-
-Reutiliza las mismas funciones de `analisis.py` que la aplicación web, así
-que las cifras de los documentos y de la interfaz nunca pueden discrepar.
+El código está separado en tres capas: `api_datos.py` obtiene los datos,
+`analisis.py` los procesa y `app.py` los presenta. Ninguna capa conoce a la
+siguiente, así que el análisis se puede probar sin levantar la interfaz.
 
 ---
 
@@ -210,4 +188,4 @@ que las cifras de los documentos y de la interfaz nunca pueden discrepar.
 
 ## Construido con
 
-`streamlit` · `requests` · `pandas` · `matplotlib` · `python-docx`
+`streamlit` · `requests` · `pandas` · `matplotlib`

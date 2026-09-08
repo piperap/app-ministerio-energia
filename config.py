@@ -1,8 +1,8 @@
 """
 Configuración del proyecto.
 =====================================================================
-Un solo lugar para cambiar la fuente de datos o los metadatos del
-informe, sin tocar el resto del código.
+Un solo lugar para cambiar la fuente de datos y los textos de la
+aplicación, sin tocar el resto del código.
 =====================================================================
 """
 
@@ -31,23 +31,3 @@ DATASET_LICENCIA = "Datos abiertos - Gobierno de Chile"
 # Parámetros de las peticiones HTTP
 PAGE_SIZE = 10_000   # máximo de filas que acepta la API por respuesta
 TIMEOUT = 60         # segundos de espera por petición
-
-
-# --------------------------------------------------------------------------- #
-# Metadatos del informe en Word
-# --------------------------------------------------------------------------- #
-# Sólo los usa `generar_informe.py` al construir el informe y el póster;
-# la aplicación web no los muestra.
-
-INFORME_AUTORES = [
-    "Nombre Apellido 1",
-    "Nombre Apellido 2",
-    "Nombre Apellido 3",
-]
-
-INFORME_CONTEXTO = "FITO9017 - Programación en Python"
-INFORME_REFERENCIA = "Unidad 3 - Semana 13"
-
-# Nombre base de los archivos generados, sin extensión.
-# Cámbialo si necesitas que los archivos sigan una convención concreta.
-NOMBRE_ARCHIVO_INFORME = "informe-matriz-electrica"
